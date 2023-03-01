@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" :class="classes">
+  <div class="wrapper" :class="classes" :style="style">
     <button class="button" @click="leftClick" @click.right.prevent="rightClick">
       <slot name="before"></slot>
       <span>{{ text }}</span>
@@ -10,12 +10,12 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted, onUpdated } from "vue";
-import commonProps from "@/common/mixins/common-props";
-import useOnMount from "@/common/hooks/base/use-on-mount";
-import useComponent from "@/common/hooks/base/use-component";
+import commonProps from "@hive/common/mixins/common-props";
+import useOnMount from "@hive/common/hooks/base/use-on-mount";
+import useComponent from "@hive/common/hooks/base/use-component";
 import useEventHandler, {
   type EventConfig,
-} from "@/common/hooks/base/use-event-handler";
+} from "@hive/common/hooks/base/use-event-handler";
 
 export default defineComponent({
   name: "HiveButton",
@@ -99,6 +99,7 @@ export default defineComponent({
     height: 100%;
     background: none;
     width: 100%;
+    text-align: center;
     &:hover {
       cursor: pointer;
     }

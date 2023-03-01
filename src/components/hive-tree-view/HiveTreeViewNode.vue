@@ -54,14 +54,14 @@ import {
   toRef,
   watch,
 } from "vue";
-import useComponent from "@/common/hooks/base/use-component";
+import useComponent from "@hive/common/hooks/base/use-component";
 import useEventHandler, {
   EventData,
-} from "@/common/hooks/base/use-event-handler";
+} from "@hive/common/hooks/base/use-event-handler";
 import HiveCheckbox from "../hive-checkbox/HiveCheckbox.vue";
-import useOnMount from "@/common/hooks/base/use-on-mount";
+import useOnMount from "@hive/common/hooks/base/use-on-mount";
 import type { TreeView } from "./hive-tree-view-type";
-import commonProps from "@/common/mixins/common-props";
+import commonProps from "@hive/common/mixins/common-props";
 
 export default defineComponent({
   name: "HiveTreeViewNode",
@@ -107,6 +107,9 @@ export default defineComponent({
     });
 
     const choose = () => {
+      handleEvent(new Event("onChoose"), {
+        name: options?.name,
+      });
       options!.choosen = !options!.choosen;
       if (props.choosen?.node && props.choosen?.node.name !== options?.name) {
         props.choosen.node.choosen = false;
@@ -145,11 +148,18 @@ export default defineComponent({
     );
 
     const emitHelper = (event: EventData) => {
-      if (event.type === "onCheck") {
-        handleEvent(new Event(event.type), {
-          name: (event?.data as any).name,
-          checked: (event?.data as any).checked,
-        });
+      switch (event.type) {
+        case "onCheck":
+          handleEvent(new Event(event.type), {
+            name: (event?.data as any).name,
+            checked: (event?.data as any).checked,
+          });
+          break;
+        case "onChoose":
+          handleEvent(new Event(event.type), {
+            name: (event?.data as any).name,
+          });
+          break;
       }
     };
 
